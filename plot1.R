@@ -37,14 +37,14 @@
 ## setting up a variable for the original working directory 
 owd <- getwd()
 
-## Settint up a data directory under the Working directory
-if(!file.exists("power")) {
-      dir.create("power")
+## Setting up a data directory under the Working directory based on the assignment
+## requirements to fork and clone a repo from the instructors course github account
+if(!file.exists("ExData_Plotting1")) {
+      dir.create("ExData_Plotting1")
 }
-setwd("./power")
-## setwd("C:/Users/Austin/Desktop/Analytics Programs/Coursera/EDA/Week 1/power")
+setwd("./ExData_Plotting1")
 
-## setting an internet file path variable and downloading the COmmunity Survet data
+## setting an internet file path variable and downloading the COmmunity Survey data
 ## to the new working directory
 fileUrl <- "https://d396qusza40orc.cloudfront.net/exdata%2Fdata%2Fhousehold_power_consumption.zip"
 download.file(fileUrl, destfile = "./power.zip", 
@@ -77,8 +77,10 @@ list.files()
 ##
 library(sqldf)
 
-## cant seem to figure out the sql statement for OR a range so getting two data frames 
-## that can be row bound
+## extracting the data for only the defined dates as read via sqldf() function and Rsqlite
+## noting that the dates are extracted from the zipped file as character so a range BETWEEN
+## statement will not work correctly therefore creating two seperate data frames then
+## row binding into a single data frame.
 power_data_1 <- read.csv.sql("household_power_consumption.txt", header = TRUE, sep = ";",
                   sql = "select * from file where Date = '1/2/2007' ")
 
@@ -90,6 +92,8 @@ library(dplyr)
 
 power_data <- bind_rows(power_data_1, power_data_2)
 str(power_data)
+
+
 
 
 
