@@ -55,7 +55,6 @@ datedownloaded <- date() ## [1] "Wed Mar 16 20:33:37 2016"
 datedownloaded
 
 
-
 ## collecting a sample of the data to establish the column classes to speed up loading
 ## however, this does not seem to work for the read.csv.sql() function so really not used here
 sample_data <- read.table(unzip("power.zip"), nrows=10, 
@@ -69,6 +68,7 @@ unlink(col_class)
 ## would be best to extract the .txt file name into a variable and used in the 
 ## read.csv function
 unzip("power.zip")
+dev.off()
 list.files()
 
 ## extracting a sub set of the power data from the dates 2007-02-01 and 2007-02-02 i.e. 2 days
@@ -87,11 +87,18 @@ power_data_1 <- read.csv.sql("household_power_consumption.txt", header = TRUE, s
 power_data_2 <- read.csv.sql("household_power_consumption.txt", header = TRUE, sep = ";",
                   sql = "select * from file where Date = '2/2/2007' ")
 
-## row binding the two data frames
+## row binding the two data frames and converting date and time to appropriate class
 library(dplyr)
 
 power_data <- bind_rows(power_data_1, power_data_2)
+power_data$long_date <- strptime(paste0(power_data$Date, power_data$Time),
+                                 "%d/%m/%Y %H:%M:%S")
 str(power_data)
+
+png(filename = "Plot1.png", width = 480, height = 480)
+hist(power_data$Global_active_power, col = "red", main = "Global Active Power",
+      xlab = "Global Active Power (kilowatts)")
+dev.off()
 
 
 
