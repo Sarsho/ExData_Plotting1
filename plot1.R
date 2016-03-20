@@ -54,19 +54,7 @@ list.files()
 datedownloaded <- date() ## [1] "Wed Mar 16 20:33:37 2016"
 datedownloaded
 
-
-## collecting a sample of the data to establish the column classes to speed up loading
-## however, this does not seem to work for the read.csv.sql() function so really not used here
-sample_data <- read.table(unzip("power.zip"), nrows=10, 
-                          header=T, quote="\"", sep=";")
-str(sample_data)
-col_class <- lapply(sample_data, class)
-unlink(col_class)
-
 ## unzipping the entire file to prepare for extracting the defined date subset
-
-## would be best to extract the .txt file name into a variable and used in the 
-## read.csv function
 unzip("power.zip")
 dev.off()
 list.files()
@@ -95,10 +83,15 @@ power_data$long_date <- strptime(paste0(power_data$Date, power_data$Time),
                                  "%d/%m/%Y %H:%M:%S")
 str(power_data)
 
+
+## final action creating the hisogram plot and saving to png file
 png(filename = "Plot1.png", width = 480, height = 480)
 hist(power_data$Global_active_power, col = "red", main = "Global Active Power",
       xlab = "Global Active Power (kilowatts)")
 dev.off()
+
+## returning working directory to the original
+setwd(owd)
 
 
 
