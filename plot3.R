@@ -88,18 +88,22 @@ power_data$long_date <- as.POSIXct(strptime(paste0(power_data$Date, power_data$T
                                  "%d/%m/%Y %H:%M:%S"))
 str(power_data)
 tail(power_data[,10])
+summary(power_data)
 
 ## final action creating the line plot and saving to png file
 ## first have to define the x-axis date range as days of the week
 ## this does the trick but forces the day names in the programatic tick locations
 ## I know there is a better way, just not able to get it to work
-png(filename = "Plot2.png", width = 480, height = 480)
+png(filename = "Plot3.png", width = 480, height = 480)
 
-plot(power_data$long_date, power_data$Sub_metering_3, xaxt = "n", type = "l", 
-     xlab = "", ylab = "Global Active Power (kilowatts)", col = "blue")
+plot(power_data$long_date, power_data$Sub_metering_1, xaxt = "n", type = "l", 
+       xlab = "", ylab = "Energy sub metering", col = "red")
+lines(power_data$long_date, power_data$Sub_metering_2, type = "l", col = 'yellow')
+lines(power_data$long_date, power_data$Sub_metering_3, type = "l", col = 'blue')
 r <- as.POSIXct(round(range(power_data$long_date), "days"))
 axis.POSIXct(1, at=seq(r[1], r[2], by="days"), format="%d", labels = c("Thu", "Fri", "Sat"))
-legend("topright", legend = "Sub_metering_3", lty = 1, col = "blue")
+legend("topright", legend = c("sub_metering_1", "sub_metering_2", "sub_metering_3"), 
+       lty = 1, col = c("red", "yellow", "blue"))
 
 dev.off()
 
