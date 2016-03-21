@@ -105,7 +105,15 @@ dev.off()
 ## returning working directory to the original directory
 setwd(owd)
 
+#### The simplist way to get the right plot
+#### I'm not sure why this was not working earlier, maybe when I first did the date I used
+#### POSXlt and I later learned not to use that, insted use POSIXct. Also maybe the lubridate
+#### package had something to do with it.
+x <- power_data$long_date
+y <- power_data$Global_active_power
 
+plot(power_data$long_date,power_data$Global_active_power,type="l",
+     ylab = "Global Active Power (kilowatts)",xlab = "")
 
 
 
